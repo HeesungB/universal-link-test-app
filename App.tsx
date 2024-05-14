@@ -7,20 +7,17 @@
 
 import React from 'react';
 import {
+  Button,
+  Linking,
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
-  View,
 } from 'react-native';
 
-import {
-  Colors,
-  Header,
-} from 'react-native/Libraries/NewAppScreen';
-
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import WebView from 'react-native-webview';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -31,20 +28,37 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Text>Hello</Text>
-        </View>
+        <Text style={styles.sectionTitle}>
+          If your app is using React Native, you can use the Linking library.
+        </Text>
+        <Button
+          title={'Linking'}
+          onPress={() => {
+            const url =
+              'https://deeplink.keplr.app/staking?chainId=akashnet-2&userIdentifier=abc&activityName=akash_stake';
+            Linking.canOpenURL(url).then(supported => {
+              if (supported) {
+                Linking.openURL(url);
+              } else {
+                console.log("Don't know how to open URI: " + url);
+              }
+            });
+          }}
+        />
+        <WebView
+          source={{uri: 'https://universal-link-test-ecru.vercel.app/'}}
+          style={{height: 500}}
+          onShouldStartLoadWithRequest={event => {
+            if (event.url.startsWith('https://deeplink.keplr.app')) {
+              Linking.openURL(event.url);
+              return false;
+            }
+            return true;
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
