@@ -14,6 +14,7 @@ import {
   StyleSheet,
   Text,
   useColorScheme,
+  View,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -30,35 +31,63 @@ function App(): React.JSX.Element {
     <SafeAreaView style={backgroundStyle}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Text style={styles.sectionTitle}>
-          If your app is using React Native, you can use the Linking library.
-        </Text>
-        <Button
-          title={'Linking'}
-          onPress={() => {
-            const url =
-              'https://deeplink.keplr.app/staking?chainId=akashnet-2&userIdentifier=abc&activityName=akash_stake';
-            Linking.canOpenURL(url).then(supported => {
-              if (supported) {
-                Linking.openURL(url);
-              } else {
-                console.log("Don't know how to open URI: " + url);
-              }
-            });
-          }}
-        />
-        <WebView
-          source={{uri: 'https://universal-link-test-ecru.vercel.app/'}}
-          style={{height: 500}}
-          onShouldStartLoadWithRequest={event => {
-            if (event.url.startsWith('https://deeplink.keplr.app')) {
-              Linking.openURL(event.url);
-              return false;
-            }
-            return true;
-          }}
-        />
+        style={{padding: 20}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          <Text style={styles.sectionTitle}>
+            If your app is using React Native, you can use the Linking library.
+          </Text>
+
+          <View style={{paddingBottom: 20}} />
+
+          <Button
+            title={'Staking Link'}
+            onPress={() => {
+              const url =
+                'https://deeplink.keplr.app/staking?chainId=akashnet-2&userIdentifier=gECb4ZvZXeLjg4tjW4-4Sa3G9RjklxQSFdfgDjSikBi5uR53SF2ghwLV4y9y7_0Wlcspj3r3&activityName=akash_stake';
+              Linking.canOpenURL(url).then(supported => {
+                if (supported) {
+                  Linking.openURL(url);
+                } else {
+                  console.log("Don't know how to open URI: " + url);
+                }
+              });
+            }}
+          />
+
+          <View style={{paddingBottom: 20}} />
+
+          <Button
+            title={'Show address Link'}
+            onPress={() => {
+              const url =
+                'https://deeplink.keplr.app/show-address?chainId=akashnet-2';
+              Linking.canOpenURL(url).then(supported => {
+                if (supported) {
+                  Linking.openURL(url);
+                } else {
+                  console.log("Don't know how to open URI: " + url);
+                }
+              });
+            }}
+          />
+        </View>
+        {/*<WebView*/}
+        {/*  source={{uri: 'https://universal-link-test-ecru.vercel.app/'}}*/}
+        {/*  style={{ height: 500 }}*/}
+        {/*  onShouldStartLoadWithRequest={event => {*/}
+        {/*    if (event.url.startsWith('https://deeplink.keplr.app')) {*/}
+        {/*      Linking.openURL(event.url);*/}
+        {/*      return false;*/}
+        {/*    }*/}
+        {/*    return true;*/}
+        {/*  }}*/}
+        {/*/>*/}
       </ScrollView>
     </SafeAreaView>
   );
